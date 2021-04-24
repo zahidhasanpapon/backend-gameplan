@@ -22,7 +22,7 @@ const visitorRoute = require("./routes/visitors");
 app.use("/visitors", visitorRoute);
 
 // Database config
-const dbUrl = process.env.MONGO_URI;
+const dbUrl = process.env.MONGODB_URI;
 mongoose
   .connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connected to MongoDB"))
