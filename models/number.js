@@ -4,11 +4,9 @@ const Schema = mongoose.Schema;
 
 const NumberSchema = new Schema(
   {
-    phone_number: {
+    phone: {
       type: Number,
       required: true,
-      min: 11,
-      max: 11,
     },
   },
   {
@@ -16,6 +14,6 @@ const NumberSchema = new Schema(
   }
 );
 
-const Number = mongoose.model("Number", NumberSchema);
+const NumberLink = mongoose.model("NumberLink", NumberSchema);
 
-module.exports = Number;
+module.exports = NumberLink;

@@ -6,9 +6,8 @@ require("dotenv").config();
 const app = express();
 
 // Middleware
-app.use(express.json());
-
 app.use(helmet());
+app.use(express.json());
 
 // Set port, listen for requests
 const port = process.env.PORT || 5000;
@@ -20,6 +19,12 @@ app.get("/", (req, res) => res.send("Building Gameplan API"));
 
 const visitorRoute = require("./routes/visitors");
 app.use("/visitors", visitorRoute);
+
+// const numbersRoute = require("./routes/numbers");
+// app.use("/sendlink", numbersRoute);
+
+const sendLinkRoute = require("./routes/numberLink");
+app.use("/link", sendLinkRoute);
 
 // Database config
 const dbUrl = process.env.MONGODB_URI;
