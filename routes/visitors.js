@@ -1,5 +1,24 @@
 const router = require("express").Router();
 let Visitor = require("../models/visitor");
+const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
+require("dotenv").config();
+
+// constant for oAuth2 tokens
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const REDIRECT_URI = "https://developers.google.com/oauthplayground";
+const CLIENT_ID = process.env.CLIENT_ID;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
+
+// oAuth2 Client
+const oAuth2Client = new google.auth.OAuth2(
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI
+);
+
+// Refresh token
+oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 router.route("/").get((req, res) => {
   Visitor.find()
@@ -7,7 +26,7 @@ router.route("/").get((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/add").post((req, res) => {
+router.route("/add").post(async (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
   const phone = Number(req.body.phone);
@@ -22,8 +41,50 @@ router.route("/add").post((req, res) => {
 
   newVisitor
     .save()
-    .then(() => res.json("Enquiry added!"))
+    .then(() => res.json("Query added!"))
     .catch((err) => res.status(400).josn("Error: " + err));
+
+  // Message content
+  const output = `
+    <p>A New Contact Request</P>
+    <h3>Contact Details</h3>
+      <ul>
+        <li>Name: ${name}</li>
+        <li>Email: ${email}</li>
+        <li>Phone: ${phone}</li>
+        <li>Message: ${message}</li>
+      </ul>
+  `;
+
+  try {
+    const accessToken = await oAuth2Client.getAccessToken();
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "oAuth2",
+        user: "1631146@iub.edu.bd",
+        clientId: CLIENT_ID,
+        clientSecret: CLIENT_SECRET,
+        refreshToken: REFRESH_TOKEN,
+        accessToken: accessToken,
+      },
+    });
+
+    const mailOptions = {
+      from: "GAMEPLAN 📧 <1631146@iub.edu.bd>",
+      to: "1631145@iub.edu.bd",
+      subject: "Gameplan Contact Request",
+      text: `${message}`,
+      html: `${output}`,
+    };
+
+    const result = await transporter
+      .sendMail(mailOptions)
+      .then((result) => console.log("Email Sent...", result))
+      .catch((error) => console.log(error.message));
+  } catch (error) {
+    return error;
+  }
 });
 
 module.exports = router;
