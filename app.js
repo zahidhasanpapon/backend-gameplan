@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const helmet = require("helmet");
 require("dotenv").config();
 
-const nodemailer = require("nodemailer");
+// Test
+const reviews = require("./data/reviews");
 
 const app = express();
 
@@ -22,6 +23,16 @@ app.use("/visitors", visitorRoute);
 
 const sendLinkRoute = require("./routes/numberLink");
 app.use("/link", sendLinkRoute);
+
+// Test
+app.get("/api/reviews", (req, res) => {
+  res.json(reviews);
+});
+
+app.get("/api/reviews/:id", (req, res) => {
+  const review = reviews.find((p) => p._id === req.params.id);
+  res.json(review);
+});
 
 const dbUrl = process.env.MONGODB_URI;
 mongoose
