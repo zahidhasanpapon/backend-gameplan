@@ -1,7 +1,9 @@
-const router = require("express").Router();
-let NumberLink = require("../models/number");
-const Vonage = require("@vonage/server-sdk");
-require("dotenv").config();
+import express from "express";
+const router = express.Router();
+import NumberLink from "../models/number.model.js";
+import Vonage from "@vonage/server-sdk";
+import dotenv from "dotenv";
+dotenv.config();
 
 // Initializing the vonage library
 const vonage = new Vonage({
@@ -48,4 +50,4 @@ router.route("/sendlink").post((req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

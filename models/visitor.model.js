@@ -1,8 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-const Schema = mongoose.Schema;
-
-const VisitorSchema = new Schema(
+const visitorSchema = new Schema(
   {
     name: {
       type: String,
@@ -26,6 +25,5 @@ const VisitorSchema = new Schema(
   }
 );
 
-const Visitor = mongoose.model("Visitor", VisitorSchema);
-
-module.exports = Visitor;
+const Visitor = mongoose.model("Visitor", visitorSchema);
+export default Visitor;

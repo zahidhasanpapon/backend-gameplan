@@ -1,15 +1,21 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const helmet = require("helmet");
-require("dotenv").config();
-
-// Test
-const reviews = require("./data/reviews");
+import express from "express";
+import helmet from "helmet";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+import { notFound, errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
 
+app.use(cors());
+dotenv.config();
 app.use(helmet());
 app.use(express.json());
+
+connectDB();
+
+// app.use(notFound);
+// app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
@@ -18,24 +24,11 @@ app.listen(port, () => {
 
 app.get("/", (req, res) => res.send("Building Gameplan API"));
 
-const visitorRoute = require("./routes/visitors");
+import visitorRoute from "./routes/visitors.js";
 app.use("/visitors", visitorRoute);
 
-const sendLinkRoute = require("./routes/numberLink");
+import sendLinkRoute from "./routes/numberLink.js";
 app.use("/link", sendLinkRoute);
 
-// Test
-app.get("/api/reviews", (req, res) => {
-  res.json(reviews);
-});
-
-app.get("/api/reviews/:id", (req, res) => {
-  const review = reviews.find((p) => p._id === req.params.id);
-  res.json(review);
-});
-
-const dbUrl = process.env.MONGODB_URI;
-mongoose
-  .connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.log(err));
+import reviewsRoute from "./routes/reviews.route.js";
+app.use("/reviews", reviewsRoute);

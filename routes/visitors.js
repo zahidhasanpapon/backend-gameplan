@@ -1,8 +1,10 @@
-const router = require("express").Router();
-let Visitor = require("../models/visitor");
-const nodemailer = require("nodemailer");
-const { google } = require("googleapis");
-require("dotenv").config();
+import express from "express";
+const router = express.Router();
+import Visitor from "../models/visitor.model.js";
+import nodemailer from "nodemailer";
+import { google } from "googleapis";
+import dotenv from "dotenv";
+dotenv.config();
 
 // constant for oAuth2 tokens
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
@@ -87,4 +89,5 @@ router.route("/add").post(async (req, res) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;
