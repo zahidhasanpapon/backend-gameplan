@@ -1,27 +1,9 @@
 import express from "express";
 const router = express.Router();
-import Review from "../models/review.model.js";
-import asyncHander from "express-async-handler";
+import { getReviews, getReviewById } from "../controllers/review.controller.js";
 
-router.get(
-  "/",
-  asyncHander(async (req, res) => {
-    const reviews = await Review.find();
-    res.json(reviews);
-  })
-);
+router.route("/").get(getReviews);
 
-router.get(
-  "/:id",
-  asyncHander(async (req, res) => {
-    const review = await Review.findById(req.params.id);
-    if (review) {
-      res.json(review);
-    } else {
-      res.status(404);
-      throw new Error("Review not found");
-    }
-  })
-);
+router.route("/:id").get(getReviewById);
 
 export default router;
