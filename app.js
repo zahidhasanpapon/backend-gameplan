@@ -14,9 +14,6 @@ app.use(express.json());
 
 connectDB();
 
-// app.use(notFound);
-// app.use(errorHandler);
-
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
@@ -32,3 +29,6 @@ app.use("/link", sendLinkRoute);
 
 import reviewsRoute from "./routes/reviews.route.js";
 app.use("/reviews", reviewsRoute);
+
+app.use(notFound);
+app.use(errorHandler);
