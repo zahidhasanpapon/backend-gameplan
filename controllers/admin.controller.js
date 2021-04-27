@@ -59,4 +59,25 @@ const getAdminProfile = asyncHander(async (req, res) => {
   }
 });
 
-export { authAdmin, getAdminProfile, registerAdmin };
+const updateAdminProfile = asyncHander(async (req, res) => {
+  const admin = await Admin.findById(req.admin._id);
+  if (admin) {
+    admin.name = req.body.name || admin.name;
+    admin.email = req.body.email || admin.email;
+    if (req.body.password) {
+      admin.password = req.body.password;
+    }
+    const updatedAdmin = await admin.save();
+    res.json({
+      _id: updatedAdmin._id,
+      name: updatedAdmin.name,
+      email: updatedAdmin.email,
+      token: generateToken(updatedAdmin._id),
+    });
+  } else {
+    res.status(404);
+    throw new Error("Admin not found");
+  }
+});
+
+export { authAdmin, getAdminProfile, registerAdmin, updateAdminProfile };
