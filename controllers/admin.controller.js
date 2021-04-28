@@ -80,4 +80,59 @@ const updateAdminProfile = asyncHander(async (req, res) => {
   }
 });
 
-export { authAdmin, getAdminProfile, registerAdmin, updateAdminProfile };
+const getAdmins = asyncHander(async (req, res) => {
+  const admins = await Admin.find({});
+  res.json(admins);
+});
+
+const deleteAdmin = asyncHander(async (req, res) => {
+  const admin = await Admin.findById(req.params.id);
+  if (admin) {
+    await admin.remove();
+    res.json({ message: "Admin Removed" });
+  } else {
+    res.status(404);
+    throw new Error("Admin not found");
+  }
+});
+
+const getAdminById = asyncHander(async (req, res) => {
+  const admin = await Admin.findById(req.params.id).select("-password");
+  if (admin) {
+    res.json(admin);
+  } else {
+    res.status(404);
+    throw new Error("Admin not found");
+  }
+});
+
+const updateAdmin = asyncHander(async (req, res) => {
+  const admin = await Admin.findById(req.params.id);
+  if (admin) {
+    admin.name = req.body.name || admin.name;
+    admin.email = req.body.email || admin.email;
+    if (req.body.password) {
+      admin.password = req.body.password;
+    }
+    const updatedAdmin = await admin.save();
+    res.json({
+      _id: updatedAdmin._id,
+      name: updatedAdmin.name,
+      email: updatedAdmin.email,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Admin not found");
+  }
+});
+
+export {
+  authAdmin,
+  getAdminProfile,
+  registerAdmin,
+  updateAdminProfile,
+  getAdmins,
+  deleteAdmin,
+  getAdminById,
+  updateAdmin,
+};
