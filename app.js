@@ -31,6 +31,9 @@ app.use("/link", sendLinkRoute);
 import reviewsRoute from "./routes/reviews.route.js";
 app.use("/reviews", reviewsRoute);
 
+import faqsRoute from "./routes/faqRoutes.js";
+app.use("/faqs", faqsRoute);
+
 import adminRoute from "./routes/admin.route.js";
 app.use("/admin", adminRoute);
 
