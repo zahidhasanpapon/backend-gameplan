@@ -16,11 +16,11 @@ const reviewSchema = new Schema(
       type: String,
       required: true,
     },
-    team_name: {
+    team: {
       type: String,
       required: true,
     },
-    review: {
+    quote: {
       type: String,
       required: true,
     },

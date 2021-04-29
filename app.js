@@ -3,6 +3,7 @@ import helmet from "helmet";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
+import path from "path";
 import { notFound, errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
@@ -32,6 +33,12 @@ app.use("/reviews", reviewsRoute);
 
 import adminRoute from "./routes/admin.route.js";
 app.use("/admin", adminRoute);
+
+import uploadRoute from "./routes/uploadRoutes.js";
+app.use("/upload", uploadRoute);
+
+const __dirname = path.resolve();
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 app.use(notFound);
 app.use(errorHandler);
