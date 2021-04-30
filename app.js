@@ -34,6 +34,9 @@ app.use("/reviews", reviewsRoute);
 import faqsRoute from "./routes/faqRoutes.js";
 app.use("/faqs", faqsRoute);
 
+import contactRoute from "./routes/contactRoutes.js";
+app.use("/contacts", contactRoute);
+
 import adminRoute from "./routes/admin.route.js";
 app.use("/admin", adminRoute);
 

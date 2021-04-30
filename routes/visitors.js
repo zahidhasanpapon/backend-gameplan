@@ -31,7 +31,7 @@ router.route("/").get((req, res) => {
 router.route("/add").post(async (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
-  const phone = Number(req.body.phone);
+  const phone = req.body.phone;
   const message = req.body.message;
 
   const newVisitor = new Visitor({
@@ -41,7 +41,7 @@ router.route("/add").post(async (req, res) => {
     message,
   });
 
-  newVisitor
+  await newVisitor
     .save()
     .then(() => res.json("Query added!"))
     .catch((err) => res.status(400).josn("Error: " + err));
