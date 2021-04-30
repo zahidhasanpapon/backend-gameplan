@@ -74,7 +74,7 @@ router.route("/add").post(async (req, res) => {
 
     const mailOptions = {
       from: "GAMEPLAN 📧 <1631146@iub.edu.bd>",
-      to: "1631145@iub.edu.bd",
+      to: "zahidhasanpapon@gmail.com",
       subject: "Gameplan Contact Request",
       text: `${message}`,
       html: `${output}`,
