@@ -24,4 +24,19 @@ const createFaq = asyncHandler(async (req, res) => {
   }
 });
 
-export { getFaqs, createFaq };
+const deleteFaq = asyncHandler(async (req, res) => {
+  const faq = await Faq.findById(req.params.id);
+  if (faq) {
+    await faq.remove();
+    res.json({ message: "Faq Removed" });
+  } else {
+    res.status(404);
+    throw new Error("Faq not found");
+  }
+});
+
+const updateFaq = asyncHandler(async (req, res) => {
+  const faq = await Faq.findById(req.params.id);
+});
+
+export { getFaqs, createFaq, deleteFaq };

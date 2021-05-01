@@ -12,9 +12,6 @@ import {
 } from "../controllers/admin.controller.js";
 import { protect } from "../middleware/authMiddleware.js";
 
-// for checking admin
-// router.route("/").post(registerAdmin).get(protect, admin, getAdmins);
-
 router
   .route("/profile")
   .get(protect, getAdminProfile)
