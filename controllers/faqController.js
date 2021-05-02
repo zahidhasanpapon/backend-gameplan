@@ -35,8 +35,18 @@ const deleteFaq = asyncHandler(async (req, res) => {
   }
 });
 
+const getFaqById = asyncHandler(async (req, res) => {
+  const faq = await Faq.findById(req.params.id);
+  if (faq) {
+    res.json(faq);
+  } else {
+    res.status(404);
+    throw new Error("Review not found");
+  }
+});
+
 const updateFaq = asyncHandler(async (req, res) => {
   const faq = await Faq.findById(req.params.id);
 });
 
-export { getFaqs, createFaq, deleteFaq };
+export { getFaqs, createFaq, deleteFaq, getFaqById };
