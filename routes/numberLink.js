@@ -20,11 +20,12 @@ router.route("/").get((req, res) => {
 router.route("/sendlink").post((req, res) => {
   // Database
   const phone = Number(req.body.phone);
-
-  console.log(req.body.phone);
+  const bdCode = 880;
+  const concatinatedPhoneNumber = `${bdCode}${phone}`;
+  console.log(concatinatedPhoneNumber);
 
   const newNumber = new NumberLink({
-    phone,
+    phone: concatinatedPhoneNumber,
   });
 
   newNumber
@@ -33,21 +34,26 @@ router.route("/sendlink").post((req, res) => {
     .catch((err) => res.status(400).josn("Error: " + err));
 
   // SMS API
-  // const from = "Gameplan";
-  // const text = "Enjoy Gameplan";
-  // vonage.message.sendSms(from, phone, text, (err, responseData) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     if (responseData.messages[0]["status"] === "0") {
-  //       console.log("Message sent successfully.");
-  //     } else {
-  //       console.log(
-  //         `Message failed with error: ${responseData.messages[0]["error-text"]}`
-  //       );
-  //     }
-  //   }
-  // });
+  const from = "Gameplan";
+  const text = "Enjoy Gameplan";
+  vonage.message.sendSms(
+    from,
+    concatinatedPhoneNumber,
+    text,
+    (err, responseData) => {
+      if (err) {
+        console.log(err);
+      } else {
+        if (responseData.messages[0]["status"] === "0") {
+          console.log("Message sent successfully.");
+        } else {
+          console.log(
+            `Message failed with error: ${responseData.messages[0]["error-text"]}`
+          );
+        }
+      }
+    }
+  );
 });
 
 export default router;
