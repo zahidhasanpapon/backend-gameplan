@@ -47,6 +47,15 @@ const getFaqById = asyncHandler(async (req, res) => {
 
 const updateFaq = asyncHandler(async (req, res) => {
   const faq = await Faq.findById(req.params.id);
+  if (faq) {
+    faq.question = req.body.question || faq.question;
+    faq.answer = req.body.answer || faq.answer;
+    const updatedFaq = await faq.save();
+    res.json(updatedFaq);
+  } else {
+    res.status(404);
+    throw new Error("Faq not found");
+  }
 });
 
-export { getFaqs, createFaq, deleteFaq, getFaqById };
+export { getFaqs, createFaq, deleteFaq, getFaqById, updateFaq };
