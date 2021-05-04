@@ -9,7 +9,7 @@ import {
 } from "../controllers/faqController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
-router.route("/").get(protect, getFaqs).post(protect, createFaq);
+router.route("/").get(getFaqs).post(protect, createFaq);
 
 router.route("/:id").delete(protect, deleteFaq).get(protect, getFaqById);
 

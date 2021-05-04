@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import NumberLink from "../models/number.model.js";
+import asyncHander from "express-async-handler";
 import Vonage from "@vonage/server-sdk";
 import dotenv from "dotenv";
 dotenv.config();
@@ -16,6 +17,19 @@ router.route("/").get((req, res) => {
     .then((numbers) => res.json(numbers))
     .catch((err) => res.status(400).json("Error: " + err));
 });
+
+router.route("/:id").delete(
+  asyncHander(async (req, res) => {
+    const phone = await NumberLink.findById(req.params.id);
+    if (phone) {
+      await phone.remove();
+      res.json({ message: "Phone number removed" });
+    } else {
+      res.status(404);
+      throw new Error("Phone number not found");
+    }
+  })
+);
 
 router.route("/sendlink").post((req, res) => {
   // Database

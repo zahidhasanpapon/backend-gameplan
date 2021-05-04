@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import Visitor from "../models/visitor.model.js";
+import asyncHander from "express-async-handler";
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
 import dotenv from "dotenv";
@@ -27,6 +28,19 @@ router.route("/").get((req, res) => {
     .then((visitors) => res.json(visitors))
     .catch((err) => res.status(400).json("Error: " + err));
 });
+
+router.route("/:id").delete(
+  asyncHander(async (req, res) => {
+    const visitor = await Visitor.findById(req.params.id);
+    if (visitor) {
+      await visitor.remove();
+      res.json({ message: "Visitor removed" });
+    } else {
+      res.status(404);
+      throw new Error("Visitor not found");
+    }
+  })
+);
 
 router.route("/add").post(async (req, res) => {
   const name = req.body.name;
