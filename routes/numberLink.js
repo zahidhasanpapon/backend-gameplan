@@ -7,10 +7,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Initializing the vonage library
-// const vonage = new Vonage({
-//   apiKey: process.env.API_KEY,
-//   apiSecret: process.env.API_SECRET,
-// });
+const vonage = new Vonage({
+  apiKey: process.env.API_KEY,
+  apiSecret: process.env.API_SECRET,
+});
 
 router.route("/").get((req, res) => {
   NumberLink.find()
